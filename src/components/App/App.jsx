@@ -24,20 +24,31 @@ export class App extends Component {
   };
 
   state = {
-    contacts: this.props.initialContacts,
+    contacts: [],
     filter: '',
   };
 
   componentDidMount() {
     const contacts = localStorage.getItem(LS_KEY);
     const parsedContacts = JSON.parse(contacts);
-    // console.log(parsedContacts);
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
+
+    if (parsedContacts !== null) {
+      return this.setState({ contacts: parsedContacts });
     }
+
+    this.setState({
+      contacts: this.props.initialContacts,
+    });
+
+    //     this.setState({
+    //       contacts:
+    //         parsedContacts !== null
+    //           ? parsedContacts
+    //           : this.props.initialContacts,
+    // })
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(_, prevState) {
     if (this.state.contacts !== prevState.contacts) {
       localStorage.setItem(LS_KEY, JSON.stringify(this.state.contacts));
     }
